@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /orders
   # GET /orders.json
@@ -38,8 +39,11 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
+    debugger
     @order = Order.new(order_params)
     @order.add_line_items(current_cart)
+    @order.user = current_user
+    @order.bill_amount = ShoppingCart.total_price(@order.line_items)
 
     respond_to do |format|
       if @order.save

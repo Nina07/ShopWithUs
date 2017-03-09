@@ -2,6 +2,7 @@ class Order < ActiveRecord::Base
 	validates :name, :email, presence: true
 
 	has_many :line_items, dependent: :destroy
+	belongs_to :user
 
 	def add_line_items(cart)
 		cart.line_items.each do |item|
