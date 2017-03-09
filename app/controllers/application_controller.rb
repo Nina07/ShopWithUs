@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
 
   private
   def current_cart
-    debugger
   	@cart = ShoppingCart.find(session[:cart_id])
   rescue ActiveRecord::RecordNotFound
   	@cart = ShoppingCart.create

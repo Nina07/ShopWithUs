@@ -45,7 +45,6 @@ class ShoppingCartsController < ApplicationController
   # DELETE /shopping_carts/1
   # DELETE /shopping_carts/1.json
   def destroy
-    debugger
     @current_cart = current_cart
     @current_cart.destroy
     session[:cart_id] = nil

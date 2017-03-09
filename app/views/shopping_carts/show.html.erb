@@ -10,6 +10,7 @@
 	<h4>Total Price: <%= ShoppingCart.total_price(@shopping_cart.line_items) %>
 </ul>
 
+<%= button_to 'Checkout', new_order_path, method: :get %><br>
 <%= link_to 'Empty Cart', shopping_cart_path(@shopping_cart), method: :delete, 
 	data: { confirm: 'Are you sure?'} %>
 <%= link_to 'Back', home_index_path %>

@@ -4,7 +4,11 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    @orders = Order.paginate page: params[:page], per_page: 4
+    respond_to do |format|
+      format.html
+      format.json { render json: @orders }
+    end
   end
 
   # GET /orders/1
@@ -14,7 +18,17 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
+    @current_cart = current_cart
+    if @current_cart.line_items.empty?
+      redirect_to home_index_url, notice: "Your cart is empty, add something to it before checking out"
+      return
+    end
+
     @order = Order.new
+    respond_to do |format|
+      format.html
+      format.json { render json: @order }
+    end
   end
 
   # GET /orders/1/edit
@@ -25,12 +39,16 @@ class OrdersController < ApplicationController
   # POST /orders.json
   def create
     @order = Order.new(order_params)
+    @order.add_line_items(current_cart)
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
+        ShoppingCart.destroy(session[:cart_id])
+        session[:cart_id] = nil
+        format.html { redirect_to home_index_url, notice: 'Thank you for placing an order!' }
         format.json { render :show, status: :created, location: @order }
       else
+        @cart = current_cart
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
