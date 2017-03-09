@@ -1,0 +1,21 @@
+<h1>Shop with us !</h1>
+<hr>
+<% @products.each do |product| %>
+	<p>
+		Name:	
+		<%= product.name %>
+	</p>
+
+	<p>
+		Description:
+		<%= product.description %>
+	</p>
+
+	<p>
+		Price:
+		<%= product.price %>
+	</p>
+
+	<%= button_to "Add to Cart", line_items_path(product_id: product.id) %>
+	<hr>
+<% end %>

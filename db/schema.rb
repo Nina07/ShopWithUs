@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170309094147) do
+ActiveRecord::Schema.define(version: 20170309162456) do
+
+  create_table "line_items", force: :cascade do |t|
+    t.integer  "product_id",       limit: 4
+    t.integer  "shopping_cart_id", limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "quantity",         limit: 4
+    t.integer  "order_id",         limit: 4
+  end
+
+  add_index "line_items", ["order_id"], name: "fk_rails_2dc2e5c22c", using: :btree
+
+  create_table "orders", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.string   "email",       limit: 255
+    t.decimal  "bill_amount",             precision: 10
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
 
   create_table "products", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -22,4 +41,10 @@ ActiveRecord::Schema.define(version: 20170309094147) do
     t.datetime "updated_at",                               null: false
   end
 
+  create_table "shopping_carts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "line_items", "orders"
 end

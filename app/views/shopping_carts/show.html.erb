@@ -1,0 +1,15 @@
+<% if notice %>
+	<p id="notice"><%= notice %></p>
+<% end %>
+
+<h2>Your Cart contents</h2>
+<ul class="font-16">
+	<% @shopping_cart.line_items.each do |item| %>
+		<li><%= item.quantity %>&nbspx&nbsp<%= item.product.name %>&nbsp$<%= item.product.price*item.quantity %></li>
+	<% end %>
+	<h4>Total Price: <%= ShoppingCart.total_price(@shopping_cart.line_items) %>
+</ul>
+
+<%= link_to 'Empty Cart', shopping_cart_path(@shopping_cart), method: :delete, 
+	data: { confirm: 'Are you sure?'} %>
+<%= link_to 'Back', home_index_path %>
